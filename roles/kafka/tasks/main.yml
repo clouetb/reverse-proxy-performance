@@ -8,4 +8,5 @@
     src: "{{ home }}/{{ archive_filename }}"
     dest: "{{ home }}"
     remote_src: yes
-    owner: "{{ user }}:{{ group }}"
+    owner: "{{ user }}"
+    group: "{{ group }}"
