@@ -27,9 +27,5 @@ pyvenv.cfg
 pip-selfcheck.json
 
 # End of https://www.toptal.com/developers/gitignore/api/vagrant,virtualenv
-webapp/.idea/.gitignore
-webapp/.idea/misc.xml
-webapp/.idea/modules.xml
-webapp/.idea/webapp.iml
-webapp/.idea/inspectionProfiles/profiles_settings.xml
-webapp/__pycache__/app.cpython-37.pyc
+.idea
+__pycache__
