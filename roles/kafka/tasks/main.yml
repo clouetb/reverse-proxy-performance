@@ -1,0 +1,11 @@
+---
+- name: Kafka | Download binary distribution
+  get_url:
+    url: "https://downloads.apache.org/kafka/{{ kafka_version }}/{{ archive_filename }}"
+    dest: "{{ home }}"
+- name: Kafka | Extract archive
+  unarchive:
+    src: "{{ home }}/{{ archive_filename }}"
+    dest: "{{ home }}"
+    remote_src: yes
+    owner: "{{ user }}:{{ group }}"
