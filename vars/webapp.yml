@@ -1,2 +1,8 @@
 ---
+# Overrides avahi defaults
 hostname: webapp
+domainname: local
+# Overrides webapp defaults
+user: vagrant
+group: "{{ user }}"
+home: "/home/{{ user }}"
