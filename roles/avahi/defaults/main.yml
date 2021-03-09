@@ -1,0 +1,4 @@
+---
+# Trick for generating a uuid
+hostname: "{{ 999999999999999999999999999999 | random | to_uuid }}"
+domainname: local

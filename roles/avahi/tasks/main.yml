@@ -1,0 +1,27 @@
+---
+- name: Avahi | Install package avahi
+  yum:
+    name: "{{ packages }}"
+    state: latest
+  become: true
+  vars:
+    packages:
+    - avahi
+- name: Avahi | Ensure correct hostname advertisement
+  lineinfile:
+    path: /etc/avahi/avahi-daemon.conf
+    regexp: "^.*host-name=.*"
+    line: "host-name={{ hostname }}"
+    owner: root
+    group: root
+    mode: '0644'
+- name: Avahi | Ensure correct host advertisement
+  lineinfile:
+    path: /etc/avahi/avahi-daemon.conf
+    regexp: "^.*domain-name=.*"
+    line: "domain-name={{ domainname }}"
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+    - Restart Avahi
