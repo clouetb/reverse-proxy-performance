@@ -13,6 +13,7 @@
     - vars/kafka.yml
   roles:
     - java
+    - avahi
     - kafka
 - hosts: druid
   become: yes

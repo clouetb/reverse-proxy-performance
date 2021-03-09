@@ -1,5 +1,8 @@
 ---
-# Overrides kafka defaults
+# Overrides avahi role defaults
+hostname: kafka
+domainname: local
+# Overrides kafka role defaults
 user: vagrant
 group: "{{ user }}"
 home: "/home/{{ user }}"
