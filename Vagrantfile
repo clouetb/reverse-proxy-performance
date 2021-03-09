@@ -7,11 +7,19 @@ Vagrant.configure("2") do |config|
     v.vmx["numvcpus"] = "2"
   end
 
-  ["kafka", "druid", "superset", "webapp"].each do |machine|
-    config.vm.define "#{machine}" do |instance|
-      instance.vm.synced_folder ".", "/vagrant"
-      instance.vm.provision "shell", path: "#{machine}.sh", privileged: false
-    end
+  ["kafka_vm", "druid_vm", "superset_vm", "webapp_vm"].each do |machine|
+    config.vm.define "#{machine}"
+    config.vm.synced_folder ".", "/vagrant"
   end
 
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "playbook.yml"
+    ansible.verbose = "vv"
+    ansible.groups = {
+      "webapp"   => ["webapp_vm"],
+      "kafka"    => ["kafka_vm"],
+      "druid"    => ["druid_vm"],
+      "superset" => ["superset_vm"]
+    } 
+  end
 end

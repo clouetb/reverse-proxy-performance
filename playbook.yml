@@ -1,0 +1,30 @@
+---
+- hosts: webapp
+  become: yes
+  vars_files:
+    - vars/webapp.yml
+  roles:
+    - python
+    - avahi
+    - webapp
+- hosts: kafka
+  become: yes
+  vars_files:
+    - vars/kafka.yml
+  roles:
+    - java
+    - kafka
+- hosts: druid
+  become: yes
+  vars_files:
+    - vars/druid.yml
+  roles:
+    - java
+    - druid
+- hosts: superset
+  become: yes
+  vars_files:
+    - vars/superset.yml
+  roles:
+    - python
+    - superset
