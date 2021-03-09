@@ -18,7 +18,7 @@
   copy:
     src: "webapp/app.py"
     dest: "{{ home }}"
-    owner: "{{ user }}"
+    owner: "{{ user }}:{{ group }}"
 - name: Webapp | Create Unit file
   template: src=webapp.service.j2 dest=/lib/systemd/system/webapp.service mode=644
   notify:

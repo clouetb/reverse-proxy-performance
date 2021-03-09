@@ -1,3 +1,4 @@
 ---
 user: vagrant
-home: /home/{{ user }}
+group: "{{ user }}"
+home: "/home/{{ user }}"
