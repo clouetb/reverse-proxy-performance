@@ -1,0 +1,11 @@
+[Unit]
+Description=Flask App Service
+After=syslog.target network.target
+[Service]
+Type=simple
+User={{ user }}
+WorkingDirectory={{ home }}
+ExecStart={{ home }}/env/bin/flask run --host=0.0.0.0
+Restart=on-abort
+[Install]
+WantedBy=multi-user.target

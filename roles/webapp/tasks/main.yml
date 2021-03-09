@@ -1,0 +1,29 @@
+---
+- name: Webapp | Install Nginx
+  yum:
+    name: "{{ packages }}"
+    state: latest
+  become: true
+  vars:
+    packages:
+    - nginx
+- name: Webapp | Install Flask in virtualenv via pip
+  become: true
+  become_user: "{{ user }}"
+  pip:
+      name: Flask
+      virtualenv: "{{ home }}/env"
+      virtualenv_python: python3.8
+- name: Webapp | Copy application file
+  copy:
+    src: "webapp/app.py"
+    dest: "{{ home }}"
+    owner: "{{ user }}"
+- name: Webapp | Create Unit file
+  template: src=webapp.service.j2 dest=/lib/systemd/system/webapp.service mode=644
+  notify:
+    - Restart Webapp
+- name: Webapp | Create Nginx configuration
+  template: src=webapp.conf.j2 dest=/etc/nginx/conf.d/webapp.conf mode=644
+  notify:
+    - Restart Nginx
