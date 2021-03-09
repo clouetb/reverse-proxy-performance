@@ -1,0 +1,9 @@
+---
+- name: setup required packages
+  yum:
+    name: "{{ packages }}"
+    state: latest
+  become: true
+  vars:
+    packages:
+    - java-11-openjdk-headless.x86_64
