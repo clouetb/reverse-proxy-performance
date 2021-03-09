@@ -1,8 +1,8 @@
 ---
-# Overrides avahi defaults
+# Overrides avahi role defaults
 hostname: webapp
 domainname: local
-# Overrides webapp defaults
+# Overrides webapp role defaults
 user: vagrant
 group: "{{ user }}"
 home: "/home/{{ user }}"
