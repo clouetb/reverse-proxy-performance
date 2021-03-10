@@ -9,3 +9,4 @@ home: "/home/{{ user }}"
 kafka_version: 2.7.0
 scala_version: 2.13
 archive_filename: "kafka_{{ scala_version }}-{{ kafka_version }}.tgz"
+kafka_dir: "{{ home }}/kafka_{{ scala_version }}-{{ kafka_version }}"
