@@ -20,7 +20,7 @@
   template:
     src: kafka-server.properties.j2
     dest: "{{ kafka_dir }}/config/kafka-server.properties"
-    mode: 644
+    mode: 0644
     owner: "{{ user }}"
     group: "{{ group }}"
   notify:
