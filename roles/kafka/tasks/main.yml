@@ -25,3 +25,6 @@
     group: "{{ group }}"
   notify:
     - Restart Kafka
+- name: Kafka | Create Kafka topic
+  shell:
+    cmd: "{{ kafka_dir }}/bin/kafka-topics.sh --create --topic {{ kafka_default_topic }} --bootstrap-server {{ avahi_hostname }}:9092"
