@@ -25,3 +25,6 @@
     mode: '0644'
   notify:
     - Restart Avahi
+- name: Avahi | Set avahi_hostname as a fact for further reuse
+  set_fact:
+    avahi_hostname: "{{ hostname }}.{{ domainname }}"
