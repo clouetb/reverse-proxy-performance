@@ -10,3 +10,18 @@
     remote_src: yes
     owner: "{{ user }}"
     group: "{{ group }}"
+- name: Kafka | Create Zookeeper unit file
+  template: src=kafka-zookeeper.service.j2 dest=/lib/systemd/system/kafka-zookeeper.service mode=644
+  notify:
+    - Restart Zookeeper
+- name: Kafka | Create Kafka unit file
+  template: src=kafka.service.j2 dest=/lib/systemd/system/kafka.service mode=644
+- name: Kafka | Create Kafka config file
+  template:
+    src: kafka-server.properties.j2
+    dest: "{{ kafka_dir }}/config/kafka-server.properties"
+    mode: 644
+    owner: "{{ user }}"
+    group: "{{ group }}"
+  notify:
+    - Restart Kafka
