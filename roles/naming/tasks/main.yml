@@ -3,7 +3,6 @@
   yum:
     name: "{{ packages }}"
     state: latest
-  become: true
   vars:
     packages:
     - avahi
