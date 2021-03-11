@@ -25,6 +25,8 @@
     group: "{{ group }}"
   notify:
     - Restart Kafka
+- name: Kafka | Flush handlers
+  meta: flush_handlers
 - name: Kafka | Create Kafka topic
   shell:
-    cmd: "{{ kafka_dir }}/bin/kafka-topics.sh --create --topic {{ kafka_default_topic }} --bootstrap-server {{ avahi_hostname }}:9092"
+    cmd: "{{ kafka_dir }}/bin/kafka-topics.sh --create --topic {{ kafka_topic }} --bootstrap-server {{ nodename }}:9092"
