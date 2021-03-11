@@ -1,0 +1,13 @@
+[Unit]
+Description=Superset Service
+After=syslog.target network.target
+[Service]
+Type=simple
+User={{ user }}
+WorkingDirectory={{ home }}
+Environment="FLASK_APP=superset"
+Environment="PYTHONPATH=.:$PYTHONPATH"
+ExecStart={{ home }}/env/bin/superset run --host=0.0.0.0 --port=8080 --with-threads
+Restart=on-abort
+[Install]
+WantedBy=multi-user.target

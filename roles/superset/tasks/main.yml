@@ -1,0 +1,36 @@
+---
+- name: Superset | Install Nginx
+  yum:
+    name: "{{ packages }}"
+    state: latest
+  become: true
+  vars:
+    packages:
+    - nginx
+- name: Superset | Install Superset in virtualenv via pip
+  become: true
+  become_user: "{{ user }}"
+  pip:
+      name: apache-superset
+      virtualenv: "{{ home }}/env"
+      virtualenv_python: python3.8
+- name: Superset | Create db
+  ansible.builtin.shell: "FLASK_APP=superset {{ home }}/env/bin/superset db upgrade"
+- name: Superset | Create admin user
+  ansible.builtin.shell: "FLASK_APP=superset {{ home }}/env/bin/superset fab create-admin --username admin --password admin --firstname admin --lastname admin --email admin@server.local"
+- name: Superset | Init superset user DB
+  ansible.builtin.shell: "FLASK_APP=superset {{ home }}/env/bin/superset init"
+- name: Superset | Enable reverse proxy
+  template: src=superset_rp.py.j2 dest={{ home }}/superset_rp.py mode=644
+- name: Superset | Create Unit file
+  template: src=superset.service.j2 dest=/lib/systemd/system/superset.service mode=644
+  become: yes
+  become_user: root
+  notify:
+    - Restart Superset
+- name: Superset | Create Nginx configuration
+  template: src=superset.conf.j2 dest=/etc/nginx/conf.d/superset.conf mode=644
+  become: yes
+  become_user: root
+  notify:
+    - Restart Nginx
