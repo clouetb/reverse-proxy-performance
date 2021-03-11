@@ -1,7 +1,4 @@
 ---
-- name: debug
-  debug:
-    var: references
 - name: Naming | Install package avahi
   yum:
     name: "{{ packages }}"
