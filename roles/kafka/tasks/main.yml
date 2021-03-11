@@ -28,5 +28,8 @@
 - name: Kafka | Flush handlers
   meta: flush_handlers
 - name: Kafka | Create Kafka topic
-  shell:
-    cmd: "{{ kafka_dir }}/bin/kafka-topics.sh --create --topic {{ kafka_topic }} --bootstrap-server {{ nodename }}:9092"
+  ansible.builtin.shell: "{{ kafka_dir }}/bin/kafka-topics.sh --create --topic {{ references[inventory_hostname].topic }} --bootstrap-server {{ references[inventory_hostname].fqdn }}:9092"
+  register: create_topic_out
+  failed_when:
+    - create_topic_out.rc != 0
+    - "'already exists' not in create_topic_out.stdout"
