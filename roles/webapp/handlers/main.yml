@@ -3,5 +3,5 @@
   service: name=webapp.service state=restarted enabled=yes
 - name: Restart Nginx
   service: name=nginx.service state=restarted enabled=yes
-- name: Restart Avahi
-  service: name=avahi-daemon.service state=restarted enabled=yes
+- name: Restart Rsyslog
+  service: name=rsyslog.service state=restarted enabled=yes
