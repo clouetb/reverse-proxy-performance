@@ -1,0 +1,19 @@
+---
+references:
+    kafka_vm:
+        hostname: kafka
+        domainname: local
+        fqdn: "kafka.local"
+        topic: "logs-httpd"
+    webapp_vm:
+        hostname: webapp
+        domainname: local
+        fqdn: "webapp.local"
+    druid_vm:
+        hostname: druid
+        domainname: local
+        fqdn: "druid.local"
+    superset_vm:
+        hostname: superset
+        domainname: local
+        fqdn: "superset.local"
