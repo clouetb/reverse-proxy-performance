@@ -1,5 +1,5 @@
 ---
-- name: setup required packages
+- name: Python | setup required packages
   yum:
     name: "{{ packages }}"
     state: latest
