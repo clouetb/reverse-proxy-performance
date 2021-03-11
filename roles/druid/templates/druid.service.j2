@@ -1,0 +1,14 @@
+[Unit]
+Description=Apache Druid server
+Documentation=https://druid.apache.org/docs/latest/design/index.html
+Requires=network.target remote-fs.target
+After=network.target remote-fs.target
+
+[Service]
+Type=simple
+User={{ user }}
+Group={{ group }}
+ExecStart={{ druid_dir }}/bin/start-single-server-small
+
+[Install]
+WantedBy=multi-user.target

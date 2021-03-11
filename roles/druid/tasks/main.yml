@@ -1,0 +1,28 @@
+---
+- name: Druid | Check if archive exists
+  stat:
+    path: "{{ home }}/{{ archive_filename }}"
+  register: druid_archive_exists
+- name: Druid | Download binary distribution
+  get_url:
+    url: "https://downloads.apache.org/druid/{{ druid_version }}/{{ archive_filename }}"
+    dest: "{{ home }}"
+  when: druid_archive_exists.stat.exists == false
+- name: Druid | Check if dir exists
+  stat:
+    path: "{{ druid_dir }}"
+  register: druid_dir_exists
+- name: Druid | Extract archive
+  unarchive:
+    src: "{{ home }}/{{ archive_filename }}"
+    dest: "{{ home }}"
+    remote_src: yes
+    owner: "{{ user }}"
+    group: "{{ group }}"
+  become_user: "{{ user }}"
+  become: yes
+  when: druid_dir_exists.stat.exists == false
+- name: Druid | Create Druid unit file
+  template: src=druid.service.j2 dest=/lib/systemd/system/druid.service mode=644
+  notify:
+    - Restart Druid
