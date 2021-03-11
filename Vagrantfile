@@ -1,5 +1,5 @@
-# -*- mode: ruby -*-
-# vi: set ft=ruby :
+# -*- mode ruby -*-
+# vi set ft=ruby 
 
 boxes = [
     {
@@ -11,7 +11,7 @@ boxes = [
     {
         :name => "druid_vm",
         :eth1 => "192.168.205.11",
-        :mem => "16381",
+        :mem => "16384",
         :cpu => "4"
     },
     {
@@ -29,11 +29,10 @@ boxes = [
 ]
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "bento/centos-8"
-
   boxes.each do |opts|
-    config.vm.define opts[:name] do |config|
-      config.vm.provider "vmware_fusion" do |v|
+    config.vm.define opts[:name] do |node|
+      node.vm.box = "bento/centos-8"
+      node.vm.provider "vmware_desktop" do |v|
         v.vmx["memsize"] = opts[:mem]
         v.vmx["numvcpus"] = opts[:cpu]
       end
@@ -49,6 +48,7 @@ Vagrant.configure("2") do |config|
       "kafka"    => ["kafka_vm"],
       "druid"    => ["druid_vm"],
       "superset" => ["superset_vm"]
-    } 
+    }
   end
+
 end
