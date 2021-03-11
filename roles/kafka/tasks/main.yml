@@ -1,8 +1,17 @@
 ---
+- name: Kafka | Check if archive exists
+  stat:
+    path: "{{ home }}/{{ archive_filename }}"
+  register: kafka_archive_exists
 - name: Kafka | Download binary distribution
   get_url:
     url: "https://downloads.apache.org/kafka/{{ kafka_version }}/{{ archive_filename }}"
     dest: "{{ home }}"
+  when: kafka_archive_exists.stat.exists == false
+- name: Kafka | Check if dir exists
+  stat:
+    path: "{{ kafka_dir }}"
+  register: kafka_dir_exists
 - name: Kafka | Extract archive
   unarchive:
     src: "{{ home }}/{{ archive_filename }}"
@@ -10,6 +19,7 @@
     remote_src: yes
     owner: "{{ user }}"
     group: "{{ group }}"
+  when: kafka_dir_exists.stat.exists == false
 - name: Kafka | Create Zookeeper unit file
   template: src=kafka-zookeeper.service.j2 dest=/lib/systemd/system/kafka-zookeeper.service mode=644
   notify:
