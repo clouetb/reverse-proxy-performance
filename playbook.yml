@@ -1,24 +1,31 @@
 ---
+- hosts: all
+  become: yes
+  vars_files:
+    - vars/references.yml
+  roles:
+    - naming
 - hosts: webapp
   become: yes
   vars_files:
     - vars/webapp.yml
+    - vars/references.yml
   roles:
     - python
-    - avahi
     - webapp
 - hosts: kafka
   become: yes
   vars_files:
     - vars/kafka.yml
+    - vars/references.yml
   roles:
     - java
-    - avahi
     - kafka
 - hosts: druid
   become: yes
   vars_files:
     - vars/druid.yml
+    - vars/references.yml
   roles:
     - java
     - druid
@@ -26,6 +33,7 @@
   become: yes
   vars_files:
     - vars/superset.yml
+    - vars/references.yml
   roles:
     - python
     - superset
