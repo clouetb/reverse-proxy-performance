@@ -9,8 +9,6 @@
     - nginx
     - rsyslog-kafka
 - name: Webapp | Install Flask in virtualenv via pip
-  become: true
-  become_user: "{{ user }}"
   pip:
       name: Flask
       virtualenv: "{{ home }}/env"
@@ -23,13 +21,16 @@
     group: "{{ group }}"
 - name: Webapp | Create Unit file
   template: src=webapp.service.j2 dest=/lib/systemd/system/webapp.service mode=644
+  become: yes
   notify:
     - Restart Webapp
 - name: Webapp | Create Nginx configuration
   template: src=webapp.conf.j2 dest=/etc/nginx/conf.d/webapp.conf mode=644
+  become: yes
   notify:
     - Restart Nginx
 - name: Webapp | Create RSyslog configuration
   template: src=webapp-rsyslog-kafka.conf.j2 dest=/etc/rsyslog.d/webapp-rsyslog-kafka.conf mode=644
+  become: yes
   notify:
     - Restart Rsyslog

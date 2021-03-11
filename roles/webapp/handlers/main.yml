@@ -1,7 +1,10 @@
 ---
 - name: Restart Webapp
   service: name=webapp.service state=restarted enabled=yes
+  become: yes
 - name: Restart Nginx
   service: name=nginx.service state=restarted enabled=yes
+  become: yes
 - name: Restart Rsyslog
   service: name=rsyslog.service state=restarted enabled=yes
+  become: yes
