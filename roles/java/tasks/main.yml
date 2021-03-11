@@ -6,7 +6,7 @@
   become: true
   vars:
     packages:
-    - java-11-openjdk-headless.x86_64
+    - java-{{ java_version }}-openjdk-headless.x86_64
 - name: Java | Get JAVA_HOME dir
   shell: dirname $(dirname $(readlink $(readlink /usr/bin/java)))
   register: java_home

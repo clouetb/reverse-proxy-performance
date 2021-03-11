@@ -15,6 +15,8 @@
     - webapp
 - hosts: kafka
   become: yes
+  vars:
+    - java_version: 11
   vars_files:
     - vars/kafka.yml
     - vars/references.yml
@@ -23,6 +25,8 @@
     - kafka
 - hosts: druid
   become: yes
+  vars:
+    - java_version: 1.8.0
   vars_files:
     - vars/druid.yml
     - vars/references.yml
