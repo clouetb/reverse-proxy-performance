@@ -1,0 +1,65 @@
+{
+  "type": "kafka",
+  "spec": {
+    "ioConfig": {
+      "type": "kafka",
+      "consumerProperties": {
+        "bootstrap.servers": "{{ references["kafka_vm"].fqdn }}:9092"
+      },
+      "topic": "{{ references["kafka_vm"].topic }}",
+      "inputFormat": {
+        "type": "json"
+      },
+      "useEarliestOffset": true
+    },
+    "tuningConfig": {
+      "type": "kafka"
+    },
+    "dataSchema": {
+      "dataSource": "logs-httpd",
+      "granularitySpec": {
+        "type": "uniform",
+        "queryGranularity": "HOUR",
+        "segmentGranularity": "HOUR",
+        "rollup": true
+      },
+      "timestampSpec": {
+        "column": "time_local",
+        "format": "iso"
+      },
+      "dimensionsSpec": {
+        "dimensions": [
+          "host",
+          "http_referer",
+          "http_user_agent",
+          "http_x_forwarded_for",
+          "remote_addr",
+          "request_method",
+          "request_uri",
+          "server_addr",
+          "upstream_addr",
+          "upstream_response_time",
+          "upstream_status",
+          {
+            "type": "long",
+            "name": "body_bytes_sent"
+          },
+          {
+            "type": "double",
+            "name": "request_time"
+          },
+          {
+            "type": "string",
+            "name": "status"
+          }
+        ]
+      },
+      "metricsSpec": [
+        {
+          "name": "count",
+          "type": "count"
+        }
+      ]
+    }
+  }
+}
