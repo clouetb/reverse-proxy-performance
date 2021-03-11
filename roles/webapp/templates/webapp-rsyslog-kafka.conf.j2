@@ -1,0 +1,17 @@
+# nginx access log ==> rsyslog server(local) ==> kafka
+module(load="omkafka")
+
+template(name="nginxLog" type="string" string="%msg%")
+
+if ($programname == "nginx_access_log") then
+    action(type="omkafka"
+        template="nginxLog"
+        broker=["{{ references["kafka_vm"].fqdn }}:9092"]
+        topic="{{ references["kafka_vm"].topic }}"
+        partitions.auto="on"
+        confParam=[
+            "socket.keepalive.enable=true"
+        ]
+    )
+
+:rawmsg, contains, "nginx_access_log" ~

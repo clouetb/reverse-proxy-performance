@@ -1,5 +1,5 @@
 ---
-- name: Webapp | Install Nginx
+- name: Webapp | Install Nginx and rsyslog-kafka
   yum:
     name: "{{ packages }}"
     state: latest
@@ -7,6 +7,7 @@
   vars:
     packages:
     - nginx
+    - rsyslog-kafka
 - name: Webapp | Install Flask in virtualenv via pip
   become: true
   become_user: "{{ user }}"
@@ -28,3 +29,7 @@
   template: src=webapp.conf.j2 dest=/etc/nginx/conf.d/webapp.conf mode=644
   notify:
     - Restart Nginx
+- name: Webapp | Create RSyslog configuration
+  template: src=webapp-rsyslog-kafka.conf.j2 dest=/etc/rsyslog.d/webapp-rsyslog-kafka.conf mode=644
+  notify:
+    - Restart Rsyslog
