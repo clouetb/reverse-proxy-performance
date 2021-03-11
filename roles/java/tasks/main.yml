@@ -13,4 +13,5 @@
 - name: Java | Edit system-level bashrc to put JAVA_HOME env var
   lineinfile:
     path: /etc/profile.d/sh.local
+    regexp: "^export JAVA_HOME=.*"
     line: "export JAVA_HOME={{ java_home.stdout }}"
