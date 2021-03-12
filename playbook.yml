@@ -6,7 +6,6 @@
   roles:
     - naming
 - hosts: webapp
-  become: yes
   vars_files:
     - vars/webapp.yml
     - vars/references.yml
@@ -14,7 +13,6 @@
     - python
     - webapp
 - hosts: kafka
-  become: yes
   vars:
     - java_version: 11
   vars_files:
@@ -24,7 +22,6 @@
     - java
     - kafka
 - hosts: druid
-  become: yes
   vars:
     - java_version: 1.8.0
   vars_files:
@@ -34,7 +31,6 @@
     - java
     - druid
 - hosts: superset
-  become: yes
   vars_files:
     - vars/superset.yml
     - vars/references.yml
