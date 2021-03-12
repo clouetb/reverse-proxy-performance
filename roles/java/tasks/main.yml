@@ -15,3 +15,4 @@
     path: /etc/profile.d/sh.local
     regexp: "^export JAVA_HOME=.*"
     line: "export JAVA_HOME={{ java_home.stdout }}"
+  become: yes
