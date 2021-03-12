@@ -8,19 +8,19 @@ app = Flask(__name__)
 
 print("Starting app")
 
-response_codes = [200] * 85
-response_codes += [401] * 10
+response_codes = [200] * 850
+response_codes += [401] * 100
 response_codes += [404] * 3
 response_codes += [403] * 2
 response_codes += [500] * 1
 
-sleep_times = [0.1] * 30
-sleep_times += [0.5] * 20
-sleep_times += [1] * 15
-sleep_times += [5] * 15
-sleep_times += [10] * 10
-sleep_times += [30] * 3
-sleep_times += [40] * 3
+sleep_times = [0.1] * 300
+sleep_times += [0.5] * 200
+sleep_times += [1] * 150
+sleep_times += [5] * 150
+sleep_times += [10] * 100
+sleep_times += [30] * 30
+sleep_times += [40] * 30
 sleep_times += [60] * 2
 sleep_times += [90] * 1
 sleep_times += [120] * 1
