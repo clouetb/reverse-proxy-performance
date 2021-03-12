@@ -7,9 +7,23 @@ from flask import Flask
 app = Flask(__name__)
 
 print("Starting app")
-response_codes = [200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 400, 401, 403, 404, 404, 404, 404, 500]
-sleep_times = [0.1, 0.1, 0.1, 0.1, 0.2, 0.2, 0.5, 0.5, 0.5, 0.5, 1, 1, 1, 2, 2, 2, 5, 5, 10, 10, 20,
-               40, 60, 90, 120]
+
+response_codes = [200] * 85
+response_codes += [401] * 10
+response_codes += [404] * 3
+response_codes += [403] * 2
+response_codes += [500] * 1
+
+sleep_times = [0.1] * 30
+sleep_times += [0.5] * 20
+sleep_times += [1] * 15
+sleep_times += [5] * 15
+sleep_times += [10] * 10
+sleep_times += [30] * 3
+sleep_times += [40] * 3
+sleep_times += [60] * 2
+sleep_times += [90] * 1
+sleep_times += [120] * 1
 
 
 @app.route('/<request>')
