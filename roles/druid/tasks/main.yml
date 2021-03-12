@@ -17,13 +17,10 @@
     src: "{{ home }}/{{ archive_filename }}"
     dest: "{{ home }}"
     remote_src: yes
-    owner: "{{ user }}"
-    group: "{{ group }}"
-  become_user: "{{ user }}"
-  become: yes
   when: druid_dir_exists.stat.exists == false
 - name: Druid | Create Druid unit file
   template: src=druid.service.j2 dest=/lib/systemd/system/druid.service mode=644
+  become: yes
   notify:
     - Restart Druid
 - name: Druid | Flush handlers

@@ -1,3 +1,4 @@
 ---
 - name: Restart Druid
   service: name=druid.service state=restarted enabled=yes
+  become: yes
