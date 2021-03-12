@@ -41,4 +41,4 @@ def prepare_response(request):
 
 if __name__ == '__main__':
     print("Starting app")
-    app.run()
+    app.run(threaded=True)
