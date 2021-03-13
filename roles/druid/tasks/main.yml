@@ -22,7 +22,7 @@
   lineinfile:
     path: "{{ druid_dir }}/conf/druid/single-server/small/_common/common.runtime.properties"
     regexp: "druid.extensions.loadList=[(.*)]"
-    line: "druid.extensions.loadList=[\1, "druid-momentsketch"]"
+    line: druid.extensions.loadList=[\1, druid-momentsketch]
     backrefs: yes
   when: druid_dir_exists.stat.exists == false
 - name: Druid | Create Druid unit file
