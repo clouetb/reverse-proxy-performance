@@ -31,9 +31,9 @@ def prepare_response(request):
     chosen_response_code = random.choice(response_codes)
     chosen_sleep_time = random.choice(sleep_times)
     response_id = uuid.uuid4()
-    print(f"Request is {request}, "
-        f"response code is {chosen_response_code},"
-        f" will wait {chosen_sleep_time} before serving response, id is {response_id}")
+    #print(f"Request is {request}, "
+    #    f"response code is {chosen_response_code},"
+    #    f" will wait {chosen_sleep_time} before serving response, id is {response_id}")
     time.sleep(chosen_sleep_time)
     return f"{{\n    request:\"{request}\",\n    id:\"{response_id}\"\n    return_code:{chosen_response_code}\n}}",\
            chosen_response_code
