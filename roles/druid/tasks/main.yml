@@ -33,7 +33,7 @@
 - name: Druid | Flush handlers
   meta: flush_handlers
 - name: Druid | Copy ingestion spec
-  template: src=supervisor-spec.json.j2 dest="{{ home }}/supervisor-spec.json" mode=644
+  template: src=ingestion-spec.json.j2 dest="{{ home }}/ingestion-spec.json" mode=644
 - name: Druid | Pause for 20 seconds before submitting injection spec
   pause:
     seconds: 20
@@ -41,7 +41,7 @@
   uri:
     url: "http://{{ references['druid_vm'].fqdn }}:8081/druid/indexer/v1/supervisor"
     method: POST
-    src: "{{ home }}/supervisor-spec.json"
+    src: "{{ home }}/ingestion-spec.json"
     status_code: 200
     body_format: json
     remote_src: yes
