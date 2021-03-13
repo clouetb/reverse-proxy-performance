@@ -11,7 +11,9 @@
   become: true
   become_user: "{{ user }}"
   pip:
-      name: apache-superset
+      name:
+      - apache-superset
+      - pydruid
       virtualenv: "{{ home }}/env"
       virtualenv_python: python3.8
 - name: Superset | Create db
@@ -34,3 +36,9 @@
   become_user: root
   notify:
     - Restart Nginx
+- name: Superset | Flush handlers
+  meta: flush_handlers
+- name: Superset | Copy database configuration
+  template: src=datasources.yml.j2 dest="{{ home }}/datasources.yml" mode=644
+- name: Superset | Import database configuration
+  ansible.builtin.shell: "FLASK_APP=superset {{ home }}/env/bin/superset import-datasources -p {{ home }}/datasources.yml"
