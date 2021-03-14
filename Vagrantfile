@@ -29,13 +29,13 @@ boxes = [
 target_machines = ARGV & boxes.map {|boxes| boxes[:name]}
 machines_to_process = []
 # If no vm has been passed on the command line, do not touch the array of boxes
-if not target_machines.empty?
+if target_machines.empty?
+  machines_to_process = boxes
+else
   # Build an array of machines to process ordered following the specification of the command line
   target_machines.each do |tm|
     machines_to_process += boxes.select { |x| x[:name] == tm }
   end
-else
-  machines_to_process = boxes
 end
 
 Vagrant.configure("2") do |config|
