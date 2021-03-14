@@ -18,13 +18,20 @@
     dest: "{{ home }}"
     remote_src: yes
   when: druid_dir_exists.stat.exists == false
+- name: Druid | Download contribs
+  ansible.builtin.shell: >
+    java -classpath "{{ druid_dir }}/lib/*"
+    -Ddruid.extensions.hadoopDependenciesDir={{ druid_dir }}/hadoop-dependencies
+    -Ddruid.extensions.directory={{ druid_dir }}/extensions
+    org.apache.druid.cli.Main tools pull-deps --no-default-hadoop
+    -l {{ druid_dir }}/extensions -c org.apache.druid.extensions.contrib:druid-momentsketch
+  when: druid_dir_exists.stat.exists == false
 - name: Java | Enable extended statistics aggregation functions
   lineinfile:
     path: "{{ druid_dir }}/conf/druid/single-server/small/_common/common.runtime.properties"
-    regexp: "druid.extensions.loadList=[(.*)]"
-    line: druid.extensions.loadList=[\1, druid-momentsketch]
+    regexp: "^druid.extensions.loadList=\\[(((?!druid-momentsketch).)*)\\]$"
+    line: druid.extensions.loadList=[\1, "druid-momentsketch"]
     backrefs: yes
-  when: druid_dir_exists.stat.exists == false
 - name: Druid | Create Druid unit file
   template: src=druid.service.j2 dest=/lib/systemd/system/druid.service mode=644
   become: yes
@@ -32,11 +39,16 @@
     - Restart Druid
 - name: Druid | Flush handlers
   meta: flush_handlers
+- name: Druid | Check if injection spec has already been setup
+  stat:
+    path: "{{ home }}/ingestion-spec.json"
+  register: ingestion_spec_exists
 - name: Druid | Copy ingestion spec
   template: src=ingestion-spec.json.j2 dest="{{ home }}/ingestion-spec.json" mode=644
 - name: Druid | Pause for 20 seconds before submitting injection spec
   pause:
     seconds: 20
+  when: ingestion_spec_exists.stat.exists == false
 - name: Druid | Post ingestion spec
   uri:
     url: "http://{{ references['druid_vm'].fqdn }}:8081/druid/indexer/v1/supervisor"
@@ -45,3 +57,4 @@
     status_code: 200
     body_format: json
     remote_src: yes
+  when: ingestion_spec_exists.stat.exists == false
