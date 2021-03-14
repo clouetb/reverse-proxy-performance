@@ -3,7 +3,7 @@
   yum:
     name: "{{ packages }}"
     state: latest
-  become: true
+  become: yes
   vars:
     packages:
     - python38-psycopg2
