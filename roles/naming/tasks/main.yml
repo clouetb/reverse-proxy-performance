@@ -6,6 +6,7 @@
   vars:
     packages:
     - avahi
+  become: yes
 - name: Naming | Ensure correct hostname advertisement
   lineinfile:
     path: /etc/avahi/avahi-daemon.conf
@@ -14,6 +15,7 @@
     owner: root
     group: root
     mode: '0644'
+  become: yes
 - name: Naming | Ensure correct host advertisement
   lineinfile:
     path: /etc/avahi/avahi-daemon.conf
@@ -22,6 +24,7 @@
     owner: root
     group: root
     mode: '0644'
+  become: yes
   notify:
     - Restart Naming
 - name: Naming | Flush handlers
@@ -29,12 +32,14 @@
 - name: Naming | Set hostname
   hostname:
     name: "{{ references[inventory_hostname].fqdn }}"
+  become: yes
 - name: Naming | Add myself to /etc/hosts
   lineinfile:
     dest: /etc/hosts
     regexp: "^{{ ansible_facts['default_ipv4']['address'] }}.*"
     line: "{{ ansible_facts['default_ipv4']['address'] }} {{ references[inventory_hostname].hostname }} {{ references[inventory_hostname].fqdn }}"
     state: present
+  become: yes
 - name: Naming | Set hostname as facts for further reuse
   set_fact:
     fqdn: "{{ references[inventory_hostname].fqdn }}"
