@@ -36,16 +36,21 @@ Vagrant.configure("2") do |config|
         v.vmx["memsize"] = opts[:mem]
         v.vmx["numvcpus"] = opts[:cpu]
       end
-      node.vm.provision "ansible" do |ansible|
-        ansible.playbook = "playbook.yml"
-        ansible.verbose = "vv"
-        ansible.limit = "all"
-        ansible.groups = {
-          "webapp"   => ["webapp_vm"],
-          "kafka"    => ["kafka_vm"],
-          "druid"    => ["druid_vm"],
-          "superset" => ["superset_vm"]
-        }
+      if opts == boxes.last
+        node.vm.provision "ansible" do |ansible|
+          ansible.playbook = "playbook.yml"
+          ansible.verbose = "vv"
+          ansible.limit = "all"
+          ansible.groups = {
+            "naming"   => ["webapp_vm", "superset_vm", "kafka_vm", "druid_vm"],
+            "java"     => ["kafka_vm", "druid_vm"],
+            "python"   => ["webapp_vm", "superset_vm"],
+            "webapp"   => ["webapp_vm"],
+            "kafka"    => ["kafka_vm"],
+            "druid"    => ["druid_vm"],
+            "superset" => ["superset_vm"]
+          }
+        end
       end
     end
   end

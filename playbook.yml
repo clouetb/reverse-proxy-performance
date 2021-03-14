@@ -1,25 +1,40 @@
 ---
-- hosts: all
-  become: yes
+- hosts: naming
+  strategy: free
+  serial: 4
   vars_files:
     - vars/references.yml
   roles:
     - naming
+- hosts: java
+  strategy: free
+  serial: 2
+  vars_files:
+    - vars/references.yml
+  roles:
+    - java
+- hosts: python
+  strategy: free
+  serial: 2
+  vars_files:
+    - vars/references.yml
+  roles:
+    - python
 - hosts: webapp
+  strategy: free
   vars_files:
     - vars/webapp.yml
     - vars/references.yml
   roles:
-    - python
     - webapp
 - hosts: kafka
+  strategy: free
   vars:
     - java_version: 11
   vars_files:
     - vars/kafka.yml
     - vars/references.yml
   roles:
-    - java
     - kafka
 - hosts: druid
   vars:
@@ -28,12 +43,11 @@
     - vars/druid.yml
     - vars/references.yml
   roles:
-    - java
     - druid
 - hosts: superset
+  strategy: free
   vars_files:
     - vars/superset.yml
     - vars/references.yml
   roles:
-    - python
     - superset
