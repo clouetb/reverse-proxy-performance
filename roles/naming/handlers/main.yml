@@ -1,3 +1,4 @@
 ---
 - name: Restart Naming
   service: name=avahi-daemon.service state=restarted enabled=yes
+  become: yes
