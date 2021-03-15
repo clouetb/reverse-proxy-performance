@@ -2,10 +2,18 @@
 module = wsgi:app
 
 master = true
-processes = 5
 
 socket = /run/webapp/webapp.sock
 chmod-socket = 666
 vacuum = true
 
 die-on-term = true
+
+processes = 10
+threads = 20
+cheaper = 2
+cheaper-initial = 5
+cheaper-step = 1
+
+cheaper-algo = spare
+cheaper-overload = 5
