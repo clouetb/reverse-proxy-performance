@@ -5,7 +5,10 @@ After=syslog.target network.target
 Type=simple
 User={{ user }}
 WorkingDirectory={{ home }}
-ExecStart={{ home }}/env/bin/flask run --host=0.0.0.0
+Environment="PATH={{ home }}/env/bin:$PATH"
+Environment="FLASK_APP=wsgi:app"
+Environment="PYTHONPATH=.:$PYTHONPATH"
+ExecStart={{ home }}/env/bin/uwsgi --ini webapp.ini
 Restart=on-abort
 [Install]
 WantedBy=multi-user.target

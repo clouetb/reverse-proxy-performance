@@ -1,0 +1,11 @@
+[uwsgi]
+module = wsgi:app
+
+master = true
+processes = 5
+
+socket = /run/webapp/webapp.sock
+chmod-socket = 666
+vacuum = true
+
+die-on-term = true

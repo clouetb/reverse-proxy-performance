@@ -10,15 +10,36 @@
     - rsyslog-kafka
 - name: Webapp | Install Flask in virtualenv via pip
   pip:
-      name: Flask
+      name:
+        - Flask
+        - uwsgi
       virtualenv: "{{ home }}/env"
       virtualenv_python: python3.8
-- name: Webapp | Copy application file
+- name: Webapp | Copy wsgi files
   copy:
-    src: "webapp/app.py"
+    src: "webapp/wsgi.py"
     dest: "{{ home }}"
     owner: "{{ user }}"
     group: "{{ group }}"
+- name: Webapp | Create application dir
+  file: path="{{ home }}/webapp" state=directory
+- name: Webapp | Create socket dir
+  file:
+    path: "/run/webapp"
+    state: directory
+    mode: 0755
+    owner: "{{ user }}"
+    group: "{{ group }}"
+  become: yes
+- name: Webapp | Copy application file
+  copy:
+    src: "webapp/app.py"
+    dest: "{{ home }}/webapp/"
+    owner: "{{ user }}"
+    group: "{{ group }}"
+- name: Webapp | Create ini file
+  template: src=webapp.ini.j2 dest="{{ home }}/webapp.ini" mode=644
+
 - name: Webapp | Create Unit file
   template: src=webapp.service.j2 dest=/lib/systemd/system/webapp.service mode=644
   become: yes

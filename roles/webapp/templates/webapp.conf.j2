@@ -30,6 +30,7 @@ server {
     access_log /var/log/nginx/{{ references[inventory_hostname].fqdn }}.access vhostlogs;
     access_log syslog:server=unix:/dev/log,facility=local7,tag=nginx_access_log,severity=info jsonlog;
     location / {
-        proxy_pass         http://webapp;
+        include uwsgi_params;
+        uwsgi_pass unix:/run/webapp/webapp.sock;
     }
 }
