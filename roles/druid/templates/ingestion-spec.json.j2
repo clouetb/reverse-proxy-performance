@@ -13,7 +13,8 @@
       "useEarliestOffset": true
     },
     "tuningConfig": {
-      "type": "kafka"
+      "type": "kafka",
+      "logParseExceptions": true
     },
     "dataSchema": {
       "dataSource": "logs-httpd",
@@ -29,58 +30,17 @@
       },
       "dimensionsSpec": {
         "dimensions": [
-          {
-            "type": "string",
-            "name": "host"
-          },
-          {
-            "type": "string",
-            "name": "http_referer"
-          },
-          {
-            "type": "string",
-            "name": "http_user_agent"
-          },
-          {
-            "type": "string",
-            "name": "http_x_forwarded_for"
-          },
-          {
-            "type": "string",
-            "name": "remote_addr"
-          },
-          {
-            "type": "string",
-            "name": "request_method"
-          },
-          {
-            "type": "string",
-            "name": "request_uri"
-          },
-          {
-            "type": "string",
-            "name": "server_addr"
-          },
-          {
-            "type": "string",
-            "name": "upstream_addr"
-          },
-          {
-            "type": "string",
-            "name": "upstream_status"
-          },
-          {
-            "type": "long",
-            "name": "body_bytes_sent"
-          },
-          {
-            "type": "double",
-            "name": "upstream_response_time"
-          },
-          {
-            "type": "double",
-            "name": "request_time"
-          },
+          "host",
+          "http_referer",
+          "http_user_agent",
+          "http_x_forwarded_for",
+          "remote_addr",
+          "request_method",
+          "request_uri",
+          "server_addr",
+          "upstream_addr",
+          "upstream_response_time",
+          "upstream_status",
           {
             "type": "string",
             "name": "status"
@@ -92,57 +52,47 @@
           "name": "count",
           "type": "count"
         },
-        { "type" : "longSum", "name" : "body_bytes_sent_sum", "fieldName" : "body_bytes_sent" },
-        { "type" : "longMin", "name" : "body_bytes_sent_min", "fieldName" : "body_bytes_sent" },
-        { "type" : "longMax", "name" : "body_bytes_sent_max", "fieldName" : "body_bytes_sent" },
-        { "type" : "doubleMin", "name" : "upstream_response_time_min", "fieldName" : "upstream_response_time" },
-        { "type" : "doubleMax", "name" : "upstream_response_time_max", "fieldName" : "upstream_response_time" },
-        { "type" : "doubleMin", "name" : "request_time_min", "fieldName" : "request_time" },
-        { "type" : "doubleMax", "name" : "request_time_max", "fieldName" : "request_time" },
         {
-          "type" : "quantilesDoublesSketch",
-          "name" : "body_bytes_sent_quantiles",
-          "fieldName" : "body_bytes_sent"
+          "name": "sum_body_bytes_sent",
+          "type": "longSum",
+          "fieldName": "body_bytes_sent"
         },
         {
-          "type" : "quantilesDoublesSketch",
-          "name" : "upstream_response_time_quantiles",
-          "fieldName" : "upstream_response_time"
+          "name": "quantile_request_time",
+          "type": "quantilesDoublesSketch",
+          "fieldName": "request_time"
         },
         {
-          "type" : "quantilesDoublesSketch",
-          "name" : "quantilesDoublesSketch_quantiles",
-          "fieldName" : "request_time"
+          "type": "momentSketch",
+          "fieldName": "request_time",
+          "name": "moment_request_time",
+          "k": 12
         },
         {
-          "type" : "momentSketch",
-          "name" : "body_bytes_sent_moment",
-          "fieldName" : "body_bytes_sent"
+          "name": "quantile_body_bytes_sent",
+          "type": "quantilesDoublesSketch",
+          "fieldName": "body_bytes_sent"
         },
         {
-          "type" : "momentSketch",
-          "name" : "upstream_response_time_moment",
-          "fieldName" : "upstream_response_time"
+          "name": "moment_body_bytes_sent",
+          "type": "momentSketch",
+          "fieldName": "body_bytes_sent",
+          "k": 12
         },
         {
-          "type" : "momentSketch",
-          "name" : "request_time_moment",
-          "fieldName" : "request_time"
+          "name": "build_request_time",
+          "type": "HLLSketchBuild",
+          "fieldName": "request_time"
         },
         {
-          "type" : "momentSketchMerge",
-          "name" : "body_bytes_sent_moment_merge",
-          "fieldName" : "body_bytes_sent"
+          "name": "theta_request_time",
+          "type": "thetaSketch",
+          "fieldName": "request_time"
         },
         {
-          "type" : "momentSketchMerge",
-          "name" : "upstream_response_time_moment_merge",
-          "fieldName" : "upstream_response_time"
-        },
-        {
-          "type" : "momentSketchMerge",
-          "name" : "request_time_moment_merge",
-          "fieldName" : "request_time"
+          "name": "theta_body_bytes_sent",
+          "type": "thetaSketch",
+          "fieldName": "body_bytes_sent"
         }
       ]
     }
